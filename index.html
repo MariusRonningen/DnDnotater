@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DnD Notater</title>
+<style>
+    body {
+        background-color: #A0153E;
+        color: #000000;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        position: relative; /* Added for positioning */
+    }
+    .container {
+        width: 80%;
+        margin: 20px auto;
+    }
+    .tabs {
+        display: flex;
+        align-items: center;
+    }
+    .tab {
+        background-color: #EEE4B1;
+        border-radius: 10px 10px 0 0;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .tab.active {
+        background-color: #FFF7F1;
+    }
+    .tab-content {
+        display: none;
+        padding: 20px;
+        border-radius: 0 0 10px 10px;
+        background-color: #FFF7F1;
+    }
+    .tab-content.active {
+        display: block;
+    }
+    .dice {
+        position: absolute;
+        top: 20px;
+        right: 20px; /* Changed to right alignment */
+    }
+    .add-tab-button {
+        background-color: #EEE4B1;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-right: 10px;
+    }
+    .add-tab-button:hover {
+        background-color: #FFF7F1;
+    }
+    .add-picture-button {
+        background-color: #EEE4B1;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    .add-picture-button:hover {
+        background-color: #FFF7F1;
+    }
+</style>
+</head>
+<body>
+
+<img class="dice" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/D20_transparent.png/120px-D20_transparent.png" alt="20-sided dice">
+
+<div class="container">
+    <h1>DnD Notater</h1>
+    <div class="tabs">
+        <div class="tab active" onclick="openTab('places')">Places</div>
+        <div class="tab" onclick="openTab('characters')">Characters</div>
+        <div class="tab" onclick="openTab('maps')">Maps</div>
+        <div class="tab" onclick="openTab('npcs')">NPCs</div>
+        <button class="add-tab-button" onclick="addTab()">+</button>
+    </div>
+    
+    <div id="places" class="tab-content active">
+        <h2>Places</h2>
+        <textarea rows="4" cols="50" placeholder="Add notes here..."></textarea>
+        <button class="add-picture-button" onclick="openFileDialog(this)">Add Picture</button>
+    </div>
+    <div id="characters" class="tab-content">
+        <h2>Characters</h2>
+        <textarea rows="4" cols="50" placeholder="Add notes here..."></textarea>
+        <button class="add-picture-button" onclick="openFileDialog(this)">Add Picture</button>
+    </div>
+    <div id="maps" class="tab-content">
+        <h2>Maps</h2>
+        <textarea rows="4" cols="50" placeholder="Add notes here..."></textarea>
+        <button class="add-picture-button" onclick="openFileDialog(this)">Add Picture</button>
+    </div>
+    <div id="npcs" class="tab-content">
+        <h2>NPCs</h2>
+        <textarea rows="4" cols="50" placeholder="Add notes here..."></textarea>
+        <button class="add-picture-button" onclick="openFileDialog(this)">Add Picture</button>
+    </div>
+</div>
+
+<script>
+    function openTab(tabName) {
+        var i, tabContent;
+        tabContent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+        document.getElementById(tabName).style.display = "block";
+
+        var tabs = document.getElementsByClassName("tab");
+        for (i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove("active");
+        }
+        document.querySelector("." + tabName).classList.add("active");
+    }
+
+    function addTab() {
+        var tabName = prompt("Enter the name for the new tab:");
+        if (tabName) {
+            var newTab = document.createElement("div");
+            newTab.textContent = tabName;
+            newTab.className = "tab";
+            newTab.onclick = function() {
+                openTab(tabName.toLowerCase());
+            };
+            document.querySelector(".tabs").insertBefore(newTab, document.querySelector(".add-tab-button")); // Changed the insert position
+            
+            var newTabContent = document.createElement("div");
+            newTabContent.id = tabName.toLowerCase();
+            newTabContent.className = "tab-content";
+            document.querySelector(".container").appendChild(newTabContent);
+        }
+    }
+
+    function openFileDialog(button) {
+        var input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.onchange = function(event) {
+            // Handle the file selection here
+            var file = event.target.files[0];
+            console.log("Selected file:", file);
+        };
+        input.click();
+    }
+</script>
+
+</body>
+</html>
+
+
